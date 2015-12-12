@@ -16,18 +16,20 @@ namespace nodiceweb.Controllers
 
         public TeamsController()
         {
-            var context = new FakeTeamContext
+         /*   var context = new FakeTeamContext
             {
                 Teams =
                     {
-                        new Team { Name = "BBB"},
-                        new Team { Name = "AAA"},
-                        new Team { Name = "ZZZ"},
+                        testLoadTeam(0, "New York", "B", "AL", "E", "NYB"),
+                        testLoadTeam(1, "Toronto", "G", "AL", "E", "TOG"),
+                        testLoadTeam(2, "Baltimore", "J", "AL", "E", "BLJ"),
                     }
             };
             this.db = context;
-            //this.db = new ApplicationDbContext();
+            */
+            this.db = new ApplicationDbContext();
         }
+
 
         public TeamsController(INoDiceContext context)
         {

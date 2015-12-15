@@ -16,17 +16,6 @@ namespace nodiceweb.Controllers
 
         public TeamsController()
         {
-         /*   var context = new FakeTeamContext
-            {
-                Teams =
-                    {
-                        testLoadTeam(0, "New York", "B", "AL", "E", "NYB"),
-                        testLoadTeam(1, "Toronto", "G", "AL", "E", "TOG"),
-                        testLoadTeam(2, "Baltimore", "J", "AL", "E", "BLJ"),
-                    }
-            };
-            this.db = context;
-            */
             this.db = new ApplicationDbContext();
         }
 
@@ -39,7 +28,24 @@ namespace nodiceweb.Controllers
         // GET: Teams
         public ViewResult Index()
         {
-            return View(db.Teams.ToList());
+            var data = db.Teams.OrderBy(ent => ent.League ).ThenBy( ent => ent.Division ).ThenBy( ent => ent.Name);
+            return View(data);
+       //     return View(db.Teams.ToList());
+        }
+
+        public ViewResult Group(String league, String division)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+               // Query for the Blog named ADO.NET Blog 
+                var data = context.Teams
+                                .Where(b => b.League == league).Where(b => b.Division == division)
+                                .FirstOrDefault();
+                return View(data);
+            }
+     //       var data = db.Teams.OrderBy(ent => ent.League).ThenBy(ent => ent.Division).ThenBy(ent => ent.Name);
+
+            //     return View(db.Teams.ToList());
         }
 
         // GET: Teams/Details/5

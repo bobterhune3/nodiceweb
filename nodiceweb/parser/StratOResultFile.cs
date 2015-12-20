@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using nodiceweb.Models;
+using System.Text;
 
 namespace nodiceweb.parser
 {
@@ -47,13 +49,39 @@ namespace nodiceweb.parser
             foreach(String section in SECTION_TITLES)
                 hPrimarySections.Add(section, new List<String>());
 
+            List<string> list = new List<string>(lines);
+            buildSections(list, hPrimarySections);
+        }
+
+        public StratOResultFile(MemoryStream rawData)
+        {
+            List<string> lines = convertStreamToLines(rawData);
+
+            foreach (String section in SECTION_TITLES)
+                hPrimarySections.Add(section, new List<String>());
+
             buildSections(lines, hPrimarySections);
         }
 
+        private List<string> convertStreamToLines(MemoryStream rawData)
+        {
+            rawData.Position = 0; // Rewind!
+            List<string> rows = new List<string>();
+            // Are you *sure* you want ASCII?
+            using (var reader = new StreamReader(rawData, Encoding.ASCII))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    rows.Add(line);
+                }
+            }
+            return rows;
+        }
 
         public Dictionary<String, List<String>> getPrimarySections() { return hPrimarySections;  }
 
-        private void buildSections(String[] lines, Dictionary<String, List<String>> sections)
+        private void buildSections(List<String> lines, Dictionary<String, List<String>> sections)
         {
             String title = "";
             List<String> dataLines = new List<String>();
@@ -118,24 +146,61 @@ namespace nodiceweb.parser
             return hPrimarySections[section];
         }
 
-        public void getPrimaryTotals()
+        public Dictionary<String, Season> getPrimaryTotals()
         {
             List<String> primaryData = hPrimarySections[S_PRIMARY_TOTALS];
             Dictionary<String, List<String>> hSubSections = new Dictionary<String, List<String>>();
             hSubSections.Add("TEAM                   AVG    AB    R     H   2B  3B   HR  RBI   SB   CS    E", new List<String>());
             hSubSections.Add("TEAM                   ERA   W   L      IP     H    R   ER   HR   BB    SO OAVG", new List<String>());
-            buildSections(primaryData.ToArray(), hSubSections);
+            buildSections(primaryData, hSubSections);
 
             List<String> data = hSubSections["TEAM                   ERA   W   L      IP     H    R   ER   HR   BB    SO OAVG"];
-
-            foreach (String d in data)
+            Dictionary<String, Season> results = new Dictionary<string, Season>();
+            foreach (String line in data)
             {
-                String[] lineData = d.Split(' ');
-                Console.Out.WriteLine(d);
+                buildResults(results, line);
+                //"2014 Houston         [4] 2.52  97  65  1494.2  1140  468  419  101  440  1367 .211"
+
+          //      Console.Out.WriteLine(d);
             }
-
-
+            return results;
         }
+
+        private void buildResults(Dictionary<String, Season>  results, String line)
+        {
+            Season season = new Season();
+            int year = 0;
+            String[] lineData = line.Split(' ');
+
+            Int32.TryParse(lineData[0], out year);
+            if (year > 0)
+            {
+                string team = lineData[1];
+                if (lineData[2].Length > 0)
+                    team += " " + lineData[2];
+
+                // Find the [4] line, this means data is soon after
+                int idx = 3;
+                for (; idx < lineData.Length; idx++)
+                {
+                    if (lineData[idx].Equals("[4]")) break;
+                }
+
+                int wins = 0;
+                int loses = 0;
+                int runsAllowed = 0;
+                Int32.TryParse(lineData[idx + 3], out wins);
+                Int32.TryParse(lineData[idx + 5], out loses);
+                Int32.TryParse(lineData[idx + 11], out runsAllowed);
+
+                season.Year = year;
+                season.Win = wins;
+                season.Lost = loses;
+
+                results.Add(team, season);
+            }
+        }
+
 
     }
 }

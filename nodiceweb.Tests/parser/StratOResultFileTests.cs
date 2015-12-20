@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using nodiceweb.Models;
 using nodiceweb.parser;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace nodiceweb.parser.Tests
             List<String> lines = file.getLines(StratOResultFile.S_STANDINGS);
             Assert.AreEqual(lines.Count, 237);
 
-            file.getPrimaryTotals();
+            Dictionary<String, Season> results = file.getPrimaryTotals();
         }
     }
 }

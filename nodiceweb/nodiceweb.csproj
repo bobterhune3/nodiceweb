@@ -203,6 +203,7 @@
       <DependentUpon>NoDiceModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TeamsInitalizer.cs" />
+    <Compile Include="NoDiceUtils.cs" />
     <Compile Include="parser\StratOResultFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

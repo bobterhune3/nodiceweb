@@ -189,9 +189,15 @@ namespace nodiceweb.parser
                 int wins = 0;
                 int loses = 0;
                 int runsAllowed = 0;
-                Int32.TryParse(lineData[idx + 3], out wins);
-                Int32.TryParse(lineData[idx + 5], out loses);
-                Int32.TryParse(lineData[idx + 11], out runsAllowed);
+                idx += 2;
+                if (lineData[idx].Length == 0)
+                    idx++;
+                Int32.TryParse(lineData[idx], out wins);
+                idx++;
+                if (lineData[idx].Length == 0)
+                    idx++;
+                Int32.TryParse(lineData[idx], out loses);
+                Int32.TryParse(lineData[idx + 4], out runsAllowed);
 
                 season.Year = year;
                 season.Win = wins;

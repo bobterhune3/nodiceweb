@@ -10,6 +10,7 @@ namespace nodiceweb.Models
     public interface INoDiceContext
     {
         IDbSet<Team> Teams { get; }
+        IDbSet<Season> Seasons { get; }
         int SaveChanges();
     }
 
@@ -39,5 +40,6 @@ namespace nodiceweb.Models
         }
 
         public System.Data.Entity.IDbSet<nodiceweb.Models.Team> Teams { get; set; }
+        public System.Data.Entity.IDbSet<nodiceweb.Models.Season> Seasons { get; set; }
     }
 }

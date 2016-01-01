@@ -16,6 +16,7 @@ namespace nodiceweb.Models
         }
 
         public IDbSet<Team> Teams { get; private set; }
+        public IDbSet<Season> Seasons { get; private set; }
 
         public int SaveChanges()
         {

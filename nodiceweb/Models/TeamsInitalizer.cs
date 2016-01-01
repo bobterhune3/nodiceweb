@@ -6,8 +6,8 @@ using nodiceweb.Models;
 
 namespace nodiceweb.DAL
 {
-    public class TeamsInitializer : System.Data.Entity.DropCreateDatabaseAlways<ApplicationDbContext>
-    //    .DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    //public class TeamsInitializer : System.Data.Entity.DropCreateDatabaseAlways<ApplicationDbContext>
+    public class TeamsInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {

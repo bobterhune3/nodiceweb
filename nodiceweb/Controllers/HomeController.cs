@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace nodiceweb.Controllers
 {
@@ -39,6 +40,26 @@ namespace nodiceweb.Controllers
             ViewBag.Message = "Select PRT file from SOM Game that contains stats";
 
             return View();
+        }
+
+        public ActionResult Wildcard()
+        {
+            ViewBag.Message = "Wildcard Standings";
+            
+            var data = db.Teams.OrderBy(ent => ent.League).ThenByDescending(ent => ent.Seasons.FirstOrDefault().Win);
+
+            return View(data);
+        }
+
+        public ActionResult DraftOrder()
+        {
+            ViewBag.Message = "Draft Order";
+
+            DbSet<Team> dbTeams = (DbSet<Team>)db.Teams;
+            DbSet<Season> dbSeasons = (DbSet<Season>)db.Seasons;
+
+            var courses = dbTeams.Include(c => c.Seasons).OrderBy(c => c.Seasons.FirstOrDefault().Win);
+            return View(courses.ToList());
         }
 
         [HttpPost]
@@ -114,7 +135,22 @@ namespace nodiceweb.Controllers
                 return View(data);
             }
         }
-
+        /*
+        public ViewResult Group()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                // Query for the Blog named ADO.NET Blog 
+                var data = context.Teams
+                            .Join(context.Seasons,
+                                c => c.Id,
+                                cm => cm.TeamId,
+                                (c, cm) => new { c, cm })
+                            .FirstOrDefault();
+                return View(data);
+            }
+        }
+        */
         protected override void Dispose(bool disposing)
         {
             if (disposing && db is IDisposable)
@@ -125,18 +161,15 @@ namespace nodiceweb.Controllers
         }
 
         // GET: Teams/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string code)
         {
-            if (id == null)
+            if (code == null || code.Length == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = db.Teams.Find(id);
-            if (team == null)
-            {
-                return HttpNotFound();
-            }
-            return View(team);
+
+            String url = "http://www.terhunezone.com/2014ND/team.html?team=" + code;
+            return Redirect(url);
         }
     }
 }

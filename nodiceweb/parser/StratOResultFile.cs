@@ -154,9 +154,9 @@ namespace nodiceweb.parser
             hSubSections.Add("TEAM                   ERA   W   L      IP     H    R   ER   HR   BB    SO OAVG", new List<String>());
             buildSections(primaryData, hSubSections);
 
-            List<String> data = hSubSections["TEAM                   ERA   W   L      IP     H    R   ER   HR   BB    SO OAVG"];
+            List<String> dataPitching = hSubSections["TEAM                   ERA   W   L      IP     H    R   ER   HR   BB    SO OAVG"];
             Dictionary<String, Season> results = new Dictionary<string, Season>();
-            foreach (String line in data)
+            foreach (String line in dataPitching)
             {
                 buildResults(results, line);
                 //"2014 Houston         [4] 2.52  97  65  1494.2  1140  468  419  101  440  1367 .211"

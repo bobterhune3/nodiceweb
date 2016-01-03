@@ -10,6 +10,7 @@ namespace nodiceweb
     {
         private static float LeaderWins = 0;
         private static float LeaderLoses = 0;
+        private static List<String> ProcessedDivisions = new List<String>();
 
         public static String GetWinningPercentage(int? wins, int? loses)
         {
@@ -38,22 +39,50 @@ namespace nodiceweb
 
         public static String CalculateGamesBehind(int? wins, int? loses)
         {
-        /*    int w = wins.Value;
-            int l = loses.Value;
-            int w1 = (int)LeaderWins;
-            int l1 = (int)LeaderLoses;
-            int wx = w1 - w;
-            int lx =  l - l1;
-            int top = wx + lx;
-
-            float gb = ((float)top) / 2f;
-            */
             if (LeaderWins == wins.Value && LeaderLoses == loses.Value)
                 return "--";
 
-            float top = LeaderWins - wins.Value + loses.Value - LeaderLoses;
-            float gb = top / 2;
+            float gb = (LeaderWins - wins.Value + loses.Value - LeaderLoses) / 2;
             return String.Format("{0:0.0}", gb);
+        }
+
+        public static String CalculateDraftOrderGamesBehind(int? wins, int? loses)
+        {
+            if (LeaderWins == wins.Value && LeaderLoses == loses.Value)
+                return "--";
+            float gb = (wins.Value - LeaderWins + LeaderLoses - loses.Value) / 2;
+            return String.Format("{0:0.0}", gb);
+        }
+
+        public static String ResetWildCardDataPage()
+        {
+            ProcessedDivisions.Clear();
+            return "";
+        }
+
+        public static Boolean DivisonLeader( string league, string division )
+        {
+            foreach( String storedDiv in ProcessedDivisions)
+            {
+                if (storedDiv.Equals(league+division))
+                    return false;
+            }
+
+            ProcessedDivisions.Add(league+division);
+            return true;
+        }
+
+        public static String ExpandValue(string key)
+        {
+            if (key.Equals("E"))
+                return "East";
+            if (key.Equals("W"))
+                return "West";
+            if (key.Equals("NL"))
+                return "National League";
+            if (key.Equals("AL"))
+                return "American League";
+            return key;
         }
 
     }

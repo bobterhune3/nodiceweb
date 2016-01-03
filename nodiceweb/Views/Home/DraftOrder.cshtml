@@ -1,0 +1,93 @@
+﻿@model IEnumerable<nodiceweb.Models.Team>
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>Draft Order</h2>
+
+        <table class="table">
+            <tr>
+                <th>
+                    Pick #
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Manager)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.League)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Seasons.First().Win)-
+                    @Html.DisplayNameFor(model => model.Seasons.First().Lost)
+                </th>
+                <th>
+                    Percentage
+                </th>
+                <th>
+                    GB
+                </th>
+                <th></th>
+            </tr>
+
+            @{
+                int draftPick = 1;
+            }
+
+            @nodiceweb.NoDiceUtils.ResetLeaderInformation()
+
+            @foreach (var item in Model)
+            {
+                
+                <tr>
+                    <td>
+
+                        <div>@draftPick</div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Manager)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.League)@Html.DisplayFor(modelItem => item.Division)
+                    </td>
+                    <td>
+    
+                        @Html.DisplayFor(modelItem => item.Seasons.First().Win)-
+                        @Html.DisplayFor(modelItem => item.Seasons.First().Lost)
+      
+                    </td>
+                    <td>
+                        @if (@item.Seasons.Count > 0)
+                        {
+                            @nodiceweb.NoDiceUtils.GetWinningPercentage(@item.Seasons.FirstOrDefault().Win,
+                                                                            @item.Seasons.FirstOrDefault().Lost)
+                        }
+                    </td>
+                    <td>
+                        @if (@item.Seasons.Count > 0)
+                        {
+                            @nodiceweb.NoDiceUtils.CheckHeaderInformation(@item.Seasons.FirstOrDefault().Win,
+                                                                        @item.Seasons.FirstOrDefault().Lost);
+
+                            @nodiceweb.NoDiceUtils.CalculateDraftOrderGamesBehind(@item.Seasons.FirstOrDefault().Win,
+                                                                            @item.Seasons.FirstOrDefault().Lost);
+                        }
+                    </td>
+
+                    </tr>
+
+                    draftPick=draftPick+1;
+ 
+
+            }
+
+            </table>
+
+        </p>
+    </div>
+
+</div>

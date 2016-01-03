@@ -20,6 +20,6 @@ namespace nodiceweb.Models
         public Nullable<int> Win { get; set; }
         public Nullable<int> Lost { get; set; }
     
-        public virtual Team Team { get; set; }
+        public Team Team { get; set; }
     }
 }

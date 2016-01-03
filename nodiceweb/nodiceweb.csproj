@@ -286,6 +286,8 @@
     <Content Include="Views\Teams\Edit.cshtml" />
     <Content Include="Views\Teams\Index.cshtml" />
     <Content Include="Views\Home\Upload.cshtml" />
+    <Content Include="Views\Home\Wildcard.cshtml" />
+    <Content Include="Views\Home\DraftOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

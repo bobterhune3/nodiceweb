@@ -6,28 +6,24 @@
 }
 
 
-<div class="jumbotron">
-    <h1>No Dice Web sites</h1>
-    <p class="lead">Strat-O-Matic Draft League, est: 1991?</p>
-<!--    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>-->
-</div>
+
+
 
 <div class="row">
     <div class="col-md-8">
         <h2>Current Standings</h2>
         <p>
 @foreach (var group in Model.GroupBy(model =>
-                                new
-                                {
-                                    League = model.League,
-                                    Division = model.Division
-                                }))
+                                            new
+                                            {
+                                                League = model.League,
+                                                Division = model.Division
+                                            }))
 {
 
     <table class="table">
         <tr>
-            @Html.DisplayNameFor(model => model.Name)
-            @Html.DisplayNameFor(model => model.Division)
+            <h3>@nodiceweb.NoDiceUtils.ExpandValue(@group.FirstOrDefault().League) @nodiceweb.NoDiceUtils.ExpandValue(@group.FirstOrDefault().Division)</h3>
         </tr>
         <tr>
             <th>
@@ -94,7 +90,7 @@
                     -
                 </td>
                 <td>
-                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                     @Html.ActionLink("Details", "Details", new { code = item.Code }) |
                 </td>
             </tr>
     
@@ -104,10 +100,12 @@
 }
           </p>
      </div>
+    <!--
     <div class="col-md-3">
         <h2>News</h2>
         <p>This is where league news and information is available</p>
     </div>
+        -->
 </div>
 
 

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<nodiceweb.Models.Team>
+
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>Wildcard Standings</h2>
+        <p>
+            @nodiceweb.NoDiceUtils.ResetWildCardDataPage()
+            @foreach (var group in Model.GroupBy(model =>
+                                            new
+                                            {
+                                                League = model.League
+                                            }))
+            {
+
+                <table class="table">
+                    <tr>
+                        <h3>@nodiceweb.NoDiceUtils.ExpandValue(@group.FirstOrDefault().League)</h3>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manager)
+                        </th>
+                        <th>
+                            <text>@Html.DisplayNameFor(model => model.Seasons.First().Win)-
+                                @Html.DisplayNameFor(model => model.Seasons.First().Lost)</text>
+                        </th>
+                        <th>
+                            Percentage
+                        </th>
+                        <th>
+                            GB
+                        </th>
+                    </tr>
+
+                    @nodiceweb.NoDiceUtils.ResetLeaderInformation()
+                    @{var draftPick = 1;
+                    }
+                    @foreach (var item in group)
+                    {
+                        if (!nodiceweb.NoDiceUtils.DivisonLeader(@item.League, @item.Division))
+                        {
+
+                            <tr>
+                                <td>
+                                    @if(@draftPick < 3)
+                                    {
+                                        <b>@Html.DisplayFor(modelItem => item.Name)</b>
+                                    }
+                                    else
+                                    {
+                                        <p>@Html.DisplayFor(modelItem => item.Name)</p>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Manager)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Seasons.FirstOrDefault().Win)-
+                                    @Html.DisplayFor(modelItem => item.Seasons.FirstOrDefault().Lost)
+                                </td>
+                                <td>
+                                    @if (@item.Seasons.Count > 0)
+                                    {
+                                        @nodiceweb.NoDiceUtils.GetWinningPercentage(@item.Seasons.FirstOrDefault().Win,
+                                                                            @item.Seasons.FirstOrDefault().Lost)
+                                    }
+                                </td>
+                                <td>
+                                    @if (@item.Seasons.Count > 0)
+                                    {
+                                        @nodiceweb.NoDiceUtils.CheckHeaderInformation(@item.Seasons.FirstOrDefault().Win,
+                                                                        @item.Seasons.FirstOrDefault().Lost);
+
+                                        @nodiceweb.NoDiceUtils.CalculateGamesBehind(@item.Seasons.FirstOrDefault().Win,
+                                                                            @item.Seasons.FirstOrDefault().Lost);
+                                    }
+                                </td>
+                            </tr>
+                            draftPick = draftPick + 1;
+                        }
+
+                    }
+
+                </table>
+            }
+        </p>
+    </div>
+
+</div>

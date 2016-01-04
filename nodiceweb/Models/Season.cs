@@ -19,7 +19,9 @@ namespace nodiceweb.Models
         public Nullable<int> TeamId { get; set; }
         public Nullable<int> Win { get; set; }
         public Nullable<int> Lost { get; set; }
+        public int RunsScored { get; set; }
+        public int RunsAllowed { get; set; }
     
-        public Team Team { get; set; }
+        public virtual Team Team { get; set; }
     }
 }

@@ -220,6 +220,7 @@
       <DependentUpon>NoDiceModel.edmx</DependentUpon>
       <LastGenOutput>NoDiceModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\NoDiceModel.edmx.sql" />
     <Content Include="Models\NoDiceModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>NoDiceModel.edmx</DependentUpon>

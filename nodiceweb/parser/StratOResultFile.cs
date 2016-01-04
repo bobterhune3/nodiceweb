@@ -154,11 +154,20 @@ namespace nodiceweb.parser
             hSubSections.Add("TEAM                   ERA   W   L      IP     H    R   ER   HR   BB    SO OAVG", new List<String>());
             buildSections(primaryData, hSubSections);
 
-            List<String> dataPitching = hSubSections["TEAM                   ERA   W   L      IP     H    R   ER   HR   BB    SO OAVG"];
             Dictionary<String, Season> results = new Dictionary<string, Season>();
+
+            List<String> dataBatting = hSubSections["TEAM                   AVG    AB    R     H   2B  3B   HR  RBI   SB   CS    E"];
+            foreach (String line in dataBatting)
+            {
+                buildBattingResults(results, line);
+                //      Console.Out.WriteLine(d);
+            }
+
+            List<String> dataPitching = hSubSections["TEAM                   ERA   W   L      IP     H    R   ER   HR   BB    SO OAVG"];
+
             foreach (String line in dataPitching)
             {
-                buildResults(results, line);
+                buildPitchingResults(results, line);
                 //"2014 Houston         [4] 2.52  97  65  1494.2  1140  468  419  101  440  1367 .211"
 
           //      Console.Out.WriteLine(d);
@@ -166,9 +175,39 @@ namespace nodiceweb.parser
             return results;
         }
 
-        private void buildResults(Dictionary<String, Season>  results, String line)
+        private void buildBattingResults(Dictionary<String, Season> results, String line)
         {
             Season season = new Season();
+            int year = 0;
+            String[] lineData = line.Split(' ');
+
+            Int32.TryParse(lineData[0], out year);
+            if (year > 0)
+            {
+                string team = lineData[1];
+                if (lineData[2].Length > 0)
+                    team += " " + lineData[2];
+
+                // Find the [4] line, this means data is soon after
+                int idx = 4;
+                for (; idx < lineData.Length; idx++)
+                {
+                    if (lineData[idx].Equals("[4]")) break;
+                }
+
+                int runsScored = 0;
+                idx += 3;
+                Int32.TryParse(lineData[idx + 2], out runsScored);
+
+                season.Year = year;
+                season.RunsScored = runsScored;
+                results.Add(team, season);
+            }
+        }
+
+        private void buildPitchingResults(Dictionary<String, Season>  results, String line)
+        {
+
             int year = 0;
             String[] lineData = line.Split(' ');
 
@@ -197,13 +236,15 @@ namespace nodiceweb.parser
                 if (lineData[idx].Length == 0)
                     idx++;
                 Int32.TryParse(lineData[idx], out loses);
-                Int32.TryParse(lineData[idx + 4], out runsAllowed);
+                Int32.TryParse(lineData[idx + 6], out runsAllowed);
 
-                season.Year = year;
+                Season season = results[team];
+
                 season.Win = wins;
                 season.Lost = loses;
+                season.RunsAllowed = runsAllowed;
 
-                results.Add(team, season);
+              //  results.Add(team, season);
             }
         }
 

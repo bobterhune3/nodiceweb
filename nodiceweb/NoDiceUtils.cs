@@ -85,5 +85,11 @@ namespace nodiceweb
             return key;
         }
 
+        public static String CalculatePythagorean(int? rs, int? ra)
+        {
+            Double pyTheory= Math.Pow(rs.Value, 2.0) / (Math.Pow(rs.Value, 2.0) + (Math.Pow(ra.Value, 2.0)));
+            return String.Format("{0:0.000}", pyTheory);
+        }
+
     }
 }

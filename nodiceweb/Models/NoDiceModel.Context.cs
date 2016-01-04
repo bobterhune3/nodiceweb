@@ -25,7 +25,7 @@ namespace nodiceweb.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual IDbSet<Season> Seasons { get; set; }
-        public virtual IDbSet<Team> Teams { get; set; }
+        public virtual DbSet<Season> Seasons { get; set; }
+        public virtual DbSet<Team> Teams { get; set; }
     }
 }

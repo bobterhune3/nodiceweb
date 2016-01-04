@@ -4928,7 +4928,7 @@ a.list-group-item.active > .badge,
 }
 
 .jumbotron {
-  height: 15px;
+  height : auto;
   padding: 30px;
   margin-bottom: 30px;
   font-size: 11px;
@@ -4939,7 +4939,7 @@ a.list-group-item.active > .badge,
 }
 
 .jumbotron h1 {
-  line-height: 1;
+  line-height: .24;
   color: inherit;
 }
 
@@ -4953,8 +4953,8 @@ a.list-group-item.active > .badge,
 
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding-top: 48px;
-    padding-bottom: 48px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
   .container .jumbotron {
     padding-right: 60px;

@@ -244,6 +244,8 @@ namespace nodiceweb.parser
                 season.Lost = loses;
                 season.RunsAllowed = runsAllowed;
 
+                season.PythScore = Convert.ToDouble(NoDiceUtils.CalculatePythagorean(season.RunsScored, season.RunsAllowed));
+
               //  results.Add(team, season);
             }
         }

@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 01/03/2016 11:15:21
+-- Date Created: 01/10/2016 10:18:16
 -- Generated from EDMX file: C:\dev\nodiceweb\nodiceweb\Models\NoDiceModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [nodicedb];
+USE [bterhune];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -44,7 +44,8 @@ CREATE TABLE [dbo].[Seasons] (
     [Win] int  NULL,
     [Lost] int  NULL,
     [RunsScored] int  NOT NULL,
-    [RunsAllowed] int  NOT NULL
+    [RunsAllowed] int  NOT NULL,
+    [PythScore] float  NOT NULL
 );
 GO
 

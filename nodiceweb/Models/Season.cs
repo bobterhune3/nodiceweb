@@ -21,6 +21,7 @@ namespace nodiceweb.Models
         public Nullable<int> Lost { get; set; }
         public int RunsScored { get; set; }
         public int RunsAllowed { get; set; }
+        public double PythScore { get; set; }
     
         public virtual Team Team { get; set; }
     }

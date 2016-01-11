@@ -23,6 +23,24 @@ namespace nodiceweb.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.Message = "Current Season";
+            try {
+                var data = db.Teams.OrderBy(ent => ent.League).ThenBy(ent => ent.Division).ThenByDescending(ent => ent.Seasons.FirstOrDefault().Win);
+                return View(data);
+            } catch( Exception ex )
+            {
+                var data = db.Teams.OrderBy(ent => ent.League).ThenBy(ent => ent.Division);
+                return View(data);
+            }
+
+        }
+
+        // GET: Home/Index/2015
+        public ActionResult Season(int? year)
+        {
+           ViewBag.Message = "Results for "+ year;
+
+            ViewBag.Title = "No Dice Home Page";
             var data = db.Teams.OrderBy(ent => ent.League).ThenBy(ent => ent.Division).ThenByDescending(ent => ent.Seasons.FirstOrDefault().Win);
 
             return View(data);
@@ -58,7 +76,7 @@ namespace nodiceweb.Controllers
             DbSet<Team> dbTeams = (DbSet<Team>)db.Teams;
             DbSet<Season> dbSeasons = (DbSet<Season>)db.Seasons;
 
-            var courses = dbTeams.Include(c => c.Seasons).OrderBy(c => c.Seasons.FirstOrDefault().Win);
+            var courses = dbTeams.Include(c => c.Seasons).OrderBy(c => c.Seasons.FirstOrDefault().Win).ThenBy(ent => ent.Seasons.FirstOrDefault().PythScore);
             return View(courses.ToList());
         }
 

@@ -24,6 +24,7 @@
     <Property Name="Lost" Type="int" Nullable="true" />
     <Property Name="RunsScored" Type="int" Nullable="false" />
     <Property Name="RunsAllowed" Type="int" Nullable="false" />
+    <Property Name="PythScore" Type="float" Nullable="false" />
   </EntityType>
   <EntityType Name="Teams">
     <Key>
@@ -64,6 +65,7 @@
           <NavigationProperty Name="Team" Relationship="Self.FK_Season_Teams" FromRole="Season" ToRole="Teams" />
           <Property Name="RunsScored" Type="Int32" Nullable="false" />
           <Property Name="RunsAllowed" Type="Int32" Nullable="false" />
+          <Property Name="PythScore" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="Team">
           <Key>
@@ -113,6 +115,7 @@
           <ScalarProperty Name="Lost" ColumnName="Lost" />
           <ScalarProperty Name="RunsScored" ColumnName="RunsScored" />
           <ScalarProperty Name="RunsAllowed" ColumnName="RunsAllowed" />
+          <ScalarProperty Name="PythScore" ColumnName="PythScore" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

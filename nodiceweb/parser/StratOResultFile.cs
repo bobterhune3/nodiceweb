@@ -196,14 +196,65 @@ namespace nodiceweb.parser
                 }
 
                 int runsScored = 0;
-                idx += 3;
-                Int32.TryParse(lineData[idx + 2], out runsScored);
+                int RSidx = getRunsScoredIndex(lineData, idx);
+
+
+         //       idx += 3;
+                Int32.TryParse(lineData[RSidx], out runsScored);
 
                 season.Year = year;
                 season.RunsScored = runsScored;
                 results.Add(team, season);
             }
         }
+
+
+    private int getRunsScoredIndex(String[] lineData, int idx)
+    {
+        int CurrentPos = 0;
+        for (; idx < lineData.Length; idx++)
+        {
+            if (lineData[idx].Length > 0)
+            {
+                CurrentPos++;
+                // 1=[4] 2=AVG, 3=AB, 4=RS
+                if (CurrentPos == 4)
+                    return idx;
+            }
+        }
+        return -1;
+    }
+
+    private int getNextIndex(String[] lineData, int idx)
+    {
+        idx++; 
+        for (; idx < lineData.Length; ++idx)
+        {
+            if (lineData[idx].Length > 0)
+            {
+                return idx;
+            }
+        }
+        return -1;
+    }
+
+    private int getRunsAllowIndex(String[] lineData, int idx)
+    {
+        int CurrentPos = 0;
+        for (; idx < lineData.Length; idx++)
+        {
+            if (lineData[idx].Length > 0)
+            {
+                CurrentPos++;
+                // 1=IP 2=H, 3=RA
+                if (CurrentPos == 3)
+                    return idx;
+            }
+        }
+        return -1;
+    }
+
+
 
         private void buildPitchingResults(Dictionary<String, Season>  results, String line)
         {
@@ -225,18 +276,21 @@ namespace nodiceweb.parser
                     if (lineData[idx].Equals("[4]")) break;
                 }
 
+
                 int wins = 0;
                 int loses = 0;
                 int runsAllowed = 0;
-                idx += 2;
-                if (lineData[idx].Length == 0)
-                    idx++;
-                Int32.TryParse(lineData[idx], out wins);
-                idx++;
-                if (lineData[idx].Length == 0)
-                    idx++;
-                Int32.TryParse(lineData[idx], out loses);
-                Int32.TryParse(lineData[idx + 6], out runsAllowed);
+
+                
+                idx = getNextIndex(lineData, idx);//Skip ERA
+                int idxWins = getNextIndex(lineData, idx);
+                Int32.TryParse(lineData[idxWins], out wins);
+        
+                int idxLoses = getNextIndex(lineData, idxWins);
+                Int32.TryParse(lineData[idxLoses], out loses);
+
+                int idxRunsAllow = getRunsAllowIndex(lineData, idxLoses);
+                Int32.TryParse(lineData[idxRunsAllow], out runsAllowed);
 
                 Season season = results[team];
 
